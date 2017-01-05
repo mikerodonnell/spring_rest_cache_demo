@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import demo.chat.dao.UserDao;
 import demo.chat.dao.UserTypeDao;
+import demo.chat.exception.UserNotFoundException;
 import demo.chat.model.User;
 import demo.chat.model.UserType;
 import demo.chat.serialization.UserRepresentation;
@@ -21,7 +22,12 @@ public class UserService {
 	
 	
 	public User get(final String username) {
-		return userDao.find(username);
+		User user = userDao.find(username);
+		
+		if(user == null)
+			throw new UserNotFoundException("no user with username " + username + " exists");
+		
+		return user;
 	}
 	
 	public User create(final UserRepresentation userRepresentation) {

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import demo.chat.exception.MessageCreationException;
+import demo.chat.exception.UserNotFoundException;
 import demo.chat.model.Message;
 import demo.chat.serialization.MessageRepresentation;
 import demo.chat.service.MessageService;
@@ -26,14 +27,25 @@ public class MessageController {
 	private MessageService messageService;
 	
 	
-	//@RequestMapping(value="/", method = RequestMethod.GET)
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> get( @RequestParam String customerUsername, @RequestParam String customerServiceUsername ) {
 		ResponseEntity<?> responseEntity = null;
+		List<Message> messages = null;
+		String errorMessage = null;
 		
-		List<Message> messages = messageService.get(customerUsername, customerServiceUsername);
-		// TODO: not found exception
-		responseEntity = new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
+		try {
+			messages = messageService.get(customerUsername, customerServiceUsername);
+		}
+		catch(UserNotFoundException userNotFoundException) {
+			errorMessage = userNotFoundException.getMessage();
+		}
+		
+		if(messages == null) // bad request, one or both of the specified users doesn't exist
+			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST);
+		else if(messages.isEmpty()) // valid request, just no messages found. not an error case
+			responseEntity = new ResponseEntity<String>("no chat history between customer " + customerUsername + " and customer service rep " + customerServiceUsername, HttpStatus.OK);
+		else
+			responseEntity = new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
 		
 		return responseEntity;
 	}

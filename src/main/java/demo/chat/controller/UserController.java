@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import demo.chat.exception.UserCreationException;
+import demo.chat.exception.UserNotFoundException;
 import demo.chat.model.User;
 import demo.chat.serialization.UserRepresentation;
 import demo.chat.service.UserService;
@@ -28,10 +29,19 @@ public class UserController {
 	@RequestMapping(value="/{username}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> get( @PathVariable("username") String username ) {
 		ResponseEntity<?> responseEntity = null;
+		User user = null;
+		String errorMessage = null;
 		
-		User user = userService.get(username);
-		// TODO: not found exception
-		responseEntity = new ResponseEntity<User>(user, HttpStatus.OK);
+		try {
+			user = userService.get(username);
+		}
+		catch(UserNotFoundException userNotFoundException) {
+			errorMessage = userNotFoundException.getMessage();
+		}
+		if(user == null)
+			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // return HTTP 400 bad request, though per strict REST design this would be a 404
+		else
+			responseEntity = new ResponseEntity<User>(user, HttpStatus.OK);
 		
 		return responseEntity;
 	}
@@ -50,7 +60,7 @@ public class UserController {
 		}
 		
 		if(user == null)
-			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // bad request.
+			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // return HTTP 400 bad request, though per strict REST design this would be a 404
 		else
 			responseEntity = new ResponseEntity<User>(user, HttpStatus.OK);
 		
