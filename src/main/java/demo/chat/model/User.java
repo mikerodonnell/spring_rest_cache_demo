@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="user")
 public class User {
 
+	@JsonIgnore // don't expose primary keys outside the application. Users are uniquely identified by #username
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

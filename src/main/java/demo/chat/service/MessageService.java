@@ -3,6 +3,9 @@ package demo.chat.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import demo.chat.dao.MessageDao;
@@ -77,7 +80,18 @@ public class MessageService {
 		return get(customerUser, customerServiceUser);
 	}
 	
+	public Page<Message> get(final String customerUsername, final String customerServiceUsername, int startIndex, int endIndex) {
+		User customerUser = userService.get(customerUsername);
+		User customerServiceUser = userService.get(customerServiceUsername);
+		
+		return get(customerUser, customerServiceUser, startIndex, endIndex);
+	}
+	
 	public List<Message> get(final User customerUser, final User customerServiceUser) {
 		return messageDao.find(customerUser, customerServiceUser);
+	}
+	
+	public Page<Message> get(final User customerUser, final User customerServiceUser, int startIndex, int endIndex) {
+		return messageDao.findAll( new PageRequest(startIndex, endIndex) );
 	}
 }

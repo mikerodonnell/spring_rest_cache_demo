@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="user_type")
 public class UserType {
@@ -14,6 +16,7 @@ public class UserType {
 	public static final String CUSTOMER_CODE = "CUSTOMER";
 	public static final String CUSTOMER_SERVICE_CODE = "CUSTOMER_SERVICE";
 	
+	@JsonIgnore // don't expose primary keys outside the application. UserTypes are uniquely identified by #code
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

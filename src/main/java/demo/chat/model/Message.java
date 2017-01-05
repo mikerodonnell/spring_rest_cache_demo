@@ -9,11 +9,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 // assumption: a message is always between 1 customer user and 1 customer service rep
 @Entity
 @Table(name="message")
 public class Message {
 
+	@JsonIgnore // don't expose primary keys outside the application. Message doesn't have a unique identifier right now, a GUID field could be created if needed
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;

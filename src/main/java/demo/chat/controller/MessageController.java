@@ -1,7 +1,5 @@
 package demo.chat.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +26,16 @@ public class MessageController {
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<?> get( @RequestParam String customerUsername, @RequestParam String customerServiceUsername ) {
+	public @ResponseBody ResponseEntity<?> get( @RequestParam String customerUsername, @RequestParam String customerServiceUsername, @RequestParam(required=false) Integer startIndex, @RequestParam(required=false) Integer offset ) {
 		ResponseEntity<?> responseEntity = null;
-		List<Message> messages = null;
+		Iterable<Message> messages = null; // List and Page both extend Iterable
 		String errorMessage = null;
 		
 		try {
-			messages = messageService.get(customerUsername, customerServiceUsername);
+			if(startIndex != null && startIndex >= 0 && offset != null && offset > 0)
+				messages = messageService.get(customerUsername, customerServiceUsername, startIndex, offset);
+			else
+				messages = messageService.get(customerUsername, customerServiceUsername);
 		}
 		catch(UserNotFoundException userNotFoundException) {
 			errorMessage = userNotFoundException.getMessage();
@@ -42,10 +43,10 @@ public class MessageController {
 		
 		if(messages == null) // bad request, one or both of the specified users doesn't exist
 			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST);
-		else if(messages.isEmpty()) // valid request, just no messages found. not an error case
+		else if(!messages.iterator().hasNext()) // valid request, just no messages found. not an error case
 			responseEntity = new ResponseEntity<String>("no chat history between customer " + customerUsername + " and customer service rep " + customerServiceUsername, HttpStatus.OK);
 		else
-			responseEntity = new ResponseEntity<List<Message>>(messages, HttpStatus.OK);
+			responseEntity = new ResponseEntity<Iterable<Message>>(messages, HttpStatus.OK);
 		
 		return responseEntity;
 	}
