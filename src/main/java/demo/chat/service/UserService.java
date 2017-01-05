@@ -29,10 +29,10 @@ public class UserService {
 		user.setUsername(userRepresentation.getUsername());
 		user.setPassword(userRepresentation.getPassword());
 		
-		if( UserType.CUSTOMER_CODE.equalsIgnoreCase(userRepresentation.getUserType()) )
-			user.setUserType( userTypeDao.find(UserType.CUSTOMER_CODE) );
-		else
+		if( UserType.CUSTOMER_SERVICE_CODE.equalsIgnoreCase(userRepresentation.getUserType()) )
 			user.setUserType( userTypeDao.find(UserType.CUSTOMER_SERVICE_CODE) );
+		else
+			user.setUserType( userTypeDao.find(UserType.CUSTOMER_CODE) );
 		
 		return userDao.save(user);
 	}
