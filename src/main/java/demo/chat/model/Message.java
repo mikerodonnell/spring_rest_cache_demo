@@ -26,7 +26,7 @@ public class Message {
 	@JoinColumn(name="customer_service_user_id", nullable=false)
 	private User customerServiceUser;
 	
-	@Column
+	@Column(name="message_body")
 	private String messageBody;
 	
 	@ManyToOne(optional=false)

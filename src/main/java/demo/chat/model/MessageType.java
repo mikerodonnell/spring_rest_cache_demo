@@ -11,6 +11,10 @@ import javax.persistence.Table;
 @Table(name="message_type")
 public class MessageType {
 	
+	public static final String TEXT_CODE = "TEXT";
+	public static final String IMAGE_LINK_CODE = "IMAGE_LINK";
+	public static final String VIDEO_LINK_CODE = "VIDEO_LINK";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
