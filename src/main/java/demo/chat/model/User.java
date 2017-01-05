@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="user")
 public class User {
@@ -17,15 +19,16 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
+	@JsonIgnore // don't expose the password in our response to a request for a User details
 	@Column
-	private String password; // TODO: security, don't expose password
+	private String password;
 	
 	@Column
 	private String username;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="user_type_id", nullable=false)
-	private UserType userType; // default to customer user type in constructor? or create a constant in UserType.java?
+	private UserType userType;
 	
 	
 	public Integer getId() {
