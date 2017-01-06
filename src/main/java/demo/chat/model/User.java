@@ -59,4 +59,21 @@ public class User {
 	public void setUserType(UserType userType) {
 		this.userType = userType;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null || !(obj instanceof User))
+			return false;
+		
+		User other = (User) obj;
+		return username.equals(other.username);
+	}
 }
