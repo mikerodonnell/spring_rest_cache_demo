@@ -63,6 +63,9 @@ public class MessageController {
 		catch(MessageCreationException messageCreationException) {
 			errorMessage = messageCreationException.getMessage();
 		}
+		catch(UserNotFoundException userNotFoundException) {
+			errorMessage = userNotFoundException.getMessage();
+		}
 		
 		if(message == null)
 			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // bad request.
