@@ -2,6 +2,7 @@ package demo.chat.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,6 +28,8 @@ public class MessageService {
 	private static final String STUB_HEIGHT = "151px";
 	private static final String STUB_LENGTH = "05:34";
 	private static final String STUB_SOURCE = "youtube";
+	
+	private static final Logger LOGGER = Logger.getLogger(MessageService.class);
 	
 	@Autowired
 	private MessageDao messageDao;
@@ -87,12 +90,12 @@ public class MessageService {
 	}
 	
 	// caching #get(String, String, int, int) rather than #get(User, User, int, int) so we can avoid the userService#get() lookups as well.
-	@Cacheable(cacheNames="chatCache", key="{ #customerUsername, #customerServiceUsername, #startIndex, #endIndex }")
-	public Page<Message> get(final String customerUsername, final String customerServiceUsername, int startIndex, int endIndex) {
+	@Cacheable(cacheNames="chatCache", key="{ #customerUsername, #customerServiceUsername, #startIndex, #offset }")
+	public Page<Message> get(final String customerUsername, final String customerServiceUsername, int startIndex, int offset) {
 		User customerUser = userService.get(customerUsername);
 		User customerServiceUser = userService.get(customerServiceUsername);
 		
-		return get(customerUser, customerServiceUser, startIndex, endIndex);
+		return get(customerUser, customerServiceUser, startIndex, offset);
 	}
 	
 	/**
@@ -103,6 +106,7 @@ public class MessageService {
 	 * @return
 	 */
 	public List<Message> get(final User customerUser, final User customerServiceUser) {
+		LOGGER.debug("accessing database for all messages between users " + customerServiceUser + " and " + customerUser);
 		return messageDao.find(customerUser, customerServiceUser);
 	}
 	
@@ -113,7 +117,8 @@ public class MessageService {
 	 * @param customerServiceUser
 	 * @return
 	 */
-	public Page<Message> get(final User customerUser, final User customerServiceUser, int startIndex, int endIndex) {
-		return messageDao.findAll( new PageRequest(startIndex, endIndex) );
+	public Page<Message> get(final User customerUser, final User customerServiceUser, int startIndex, int offset) {
+		LOGGER.debug("accessing database for messages " + startIndex + " through " + (startIndex+offset) + " between users " + customerServiceUser + " and " + customerUser);
+		return messageDao.findAll( new PageRequest(startIndex, offset) );
 	}
 }

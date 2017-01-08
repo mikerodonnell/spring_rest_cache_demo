@@ -61,6 +61,11 @@ public class User {
 	}
 	
 	@Override
+	public String toString() {
+		return username;
+	}
+	
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

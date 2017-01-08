@@ -1,5 +1,6 @@
 package demo.chat.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import demo.chat.serialization.UserRepresentation;
 @Service
 public class UserService {
 
+	private static final Logger LOGGER = Logger.getLogger(MessageService.class);
+	
 	@Autowired
 	private UserDao userDao;
 	
@@ -27,6 +30,7 @@ public class UserService {
 	*/
 	@Cacheable(cacheNames="chatCache", key="#username")
 	public User get(final String username) {
+		LOGGER.debug("accessing database for user " + username);
 		User user = userDao.find(username);
 		
 		if(user == null)
