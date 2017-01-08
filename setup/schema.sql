@@ -31,6 +31,7 @@ CREATE TABLE message_type (
 CREATE TABLE message (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`message_type_id` INT NOT NULL,
+	`timestamp` DATETIME NOT NULL,
 	`customer_user_id` INT NOT NULL,
 	`customer_service_user_id` INT NOT NULL,
 	`message_body` VARCHAR(4095) NOT NULL,

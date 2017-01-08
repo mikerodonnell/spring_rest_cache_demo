@@ -1,5 +1,7 @@
 package demo.chat.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,10 +19,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name="message")
 public class Message {
 
-	@JsonIgnore // don't expose primary keys outside the application. Message doesn't have a unique identifier right now, a GUID field could be created if needed
+	// don't expose primary keys outside the application. Message doesn't have a unique identifier right now, a GUID field could be created if needed.
+	// we're relying on timestamp to ultimately determine equality right now. so if a user sends another user "hello" twice in the same millisecond, our
+	// #equals() implementation wouldn't be able to differentiate.
+	@JsonIgnore
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
+	@Column
+	private Date timestamp;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name="customer_user_id", nullable=false)
@@ -37,11 +46,27 @@ public class Message {
 	private MessageType messageType;
 	
 	
+	/**
+	 * intercept persist of a Message and set the timestamp. we default the timestamp to now() at the DB level, at least in mysql, but this seems more
+	 * platform agnostic.
+	 */
+	@PrePersist
+	void setCurrentTimestamp() {
+		setTimestamp(new Date());
+	}
+	
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	
+	public Date getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
 	}
 	
 	public User getCustomerUser() {
@@ -70,6 +95,37 @@ public class Message {
 	}
 	public void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customerServiceUser == null) ? 0 : customerServiceUser.hashCode());
+		result = prime * result + ((customerUser == null) ? 0 : customerUser.hashCode());
+		result = prime * result + ((messageBody == null) ? 0 : messageBody.hashCode());
+		result = prime * result + ((messageType == null) ? 0 : messageType.hashCode());
+		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof Message))
+			return false;
+		Message other = (Message) obj;
+		if (!customerServiceUser.equals(other.customerServiceUser))
+			return false;
+		if (!customerUser.equals(other.customerUser))
+			return false;
+		if (!messageBody.equals(other.messageBody))
+			return false;
+		if (!messageType.equals(other.messageType))
+			return false;
+		if (!timestamp.equals(other.timestamp))
+			return false;
+		
+		return true;
 	}
 
 }
