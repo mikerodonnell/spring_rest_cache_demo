@@ -19,12 +19,11 @@
 		<property name="shared" value="true"/>
 	</bean>
 	
-	<!-- TODO: create user besides scholastic for accessing chat db -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<property name="url" value="jdbc:mysql://localhost:3306/chat"/>
-		<property name="username" value="scholastic"/>
-		<property name="password" value="scholastic"/>
+		<property name="username" value="chat"/>
+		<property name="password" value="correcthorsebatterystaple"/>
 	</bean>
 	
 	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">

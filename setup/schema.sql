@@ -1,4 +1,7 @@
 
+CREATE USER 'chat'@'localhost' IDENTIFIED BY 'correcthorsebatterystaple';
+GRANT ALL PRIVILEGES ON chat.* TO 'chat'@'localhost';
+
 DROP DATABASE IF EXISTS chat;
 CREATE DATABASE chat;
 
