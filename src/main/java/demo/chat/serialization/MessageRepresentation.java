@@ -25,7 +25,7 @@ public class MessageRepresentation {
 	public String getCustomerServiceUsername() {
 		return customerServiceUsername;
 	}
-	public void setUserType(String customerServiceUsername) {
+	public void setCustomerServiceUsername(String customerServiceUsername) {
 		this.customerServiceUsername = customerServiceUsername;
 	}
 	

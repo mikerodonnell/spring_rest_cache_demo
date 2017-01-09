@@ -9,32 +9,38 @@
 
 	<properties>
 		<ehcache.version>2.10.3</ehcache.version>
+		<h2.version>1.4.193</h2.version>
 		<hibernate.version>4.3.11.Final</hibernate.version>
 		<jackson.version>2.8.5</jackson.version>
+		<servlet.api.version>3.0.1</servlet.api.version>
 		<persistence.api.version>1.0.2</persistence.api.version>
 		<junit.version>4.12</junit.version>
 		<log4j.version>1.2.17</log4j.version>
 		<mysql.connector.version>5.1.40</mysql.connector.version>
 		<org.springframework-version>4.3.5.RELEASE</org.springframework-version>
 		<spring.data.jpa.version>1.9.6.RELEASE</spring.data.jpa.version>
+		<surefire.version>2.19</surefire.version>
 	</properties>
 	
 	<dependencies>
 		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>persistence-api</artifactId>
-			<version>${persistence.api.version}</version>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		
+		<!-- H2 for unit test database instance -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>${log4j.version}</version>
 		</dependency>
 		
 		<!-- Jackson dependencies for serliazing/deserializing POJOs to/from JSON -->
@@ -115,10 +121,44 @@
 			<artifactId>ehcache</artifactId>
 			<version>${ehcache.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- TODO: not exactly sure why, but getting NoClassDefFoundError errors in tests without hibernate-jpa-2.0-api, and on real server without persistence-api
+				including these in mutually exclusive scopes so tests and real server both work. -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.1.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>persistence-api</artifactId>
+			<version>${persistence.api.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 	
 	<build>
 		<finalName>spring_rest_cache_demo</finalName>
+		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surefire.version}</version>
+					<configuration>
+						<trimStackTrace>false</trimStackTrace>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	
 </project>
