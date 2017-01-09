@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import demo.chat.dao.MessageDao;
@@ -144,6 +145,6 @@ public class MessageService {
 	 */
 	public Page<Message> get(final User customerUser, final User customerServiceUser, int startIndex, int offset) {
 		LOGGER.debug("accessing database for messages " + startIndex + " through " + (startIndex+offset) + " between users " + customerServiceUser + " and " + customerUser);
-		return messageDao.findAll( new PageRequest(startIndex, offset) );
+		return messageDao.findAll( new PageRequest(startIndex, offset, Direction.ASC, "timestamp") );
 	}
 }
