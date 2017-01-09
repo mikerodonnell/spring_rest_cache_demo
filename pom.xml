@@ -16,7 +16,7 @@
 		<persistence.api.version>1.0.2</persistence.api.version>
 		<junit.version>4.12</junit.version>
 		<log4j.version>1.2.17</log4j.version>
-		<mysql.connector.version>5.1.40</mysql.connector.version>
+		<mariadb.java.client.version>1.4.6</mariadb.java.client.version>
 		<org.springframework-version>4.3.5.RELEASE</org.springframework-version>
 		<spring.data.jpa.version>1.9.6.RELEASE</spring.data.jpa.version>
 		<surefire.version>2.19</surefire.version>
@@ -104,10 +104,10 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.connector.version}</version>
-			<scope>runtime</scope> <!-- no code imports anything from mysql-connector-java-5.1.40.jar, but we need to ensure it's on the EE container at runtime -->
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>${mariadb.java.client.version}</version>
+			<scope>runtime</scope> <!-- no code imports anything from mariadb-java-client.jar, but we need to ensure it's on the EE container at runtime -->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
