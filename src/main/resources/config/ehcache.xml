@@ -5,8 +5,8 @@
 	<cache name="chatCache" 
 		maxEntriesLocalHeap="10000"
 		eternal="false"
-		timeToIdleSeconds="3000"
-		timeToLiveSeconds="6000" />
+		timeToIdleSeconds="1800"
+		timeToLiveSeconds="3600" />
 
 </ehcache>
 
