@@ -1,5 +1,8 @@
 package demo.chat.serialization;
 
+/**
+ * flattened representation of a User entity to simplify deserialization of an request body.
+ */
 public class UserRepresentation {
 
 	protected String password;

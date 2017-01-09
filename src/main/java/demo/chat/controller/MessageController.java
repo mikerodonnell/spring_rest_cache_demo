@@ -25,6 +25,15 @@ public class MessageController {
 	private MessageService messageService;
 	
 	
+	/**
+	 * retrieve all Messages between the given customer username and customer service username, optionally bounded by a pagination startIndex and offset.
+	 * 
+	 * @param customerUsername
+	 * @param customerServiceUsername
+	 * @param startIndex
+	 * @param offset
+	 * @return HTTP 200 with all Message details as JSON upon successful creation, or HTTP 400 with error message as String for failure
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> get( @RequestParam String customerUsername, @RequestParam String customerServiceUsername, @RequestParam(required=false) Integer startIndex, @RequestParam(required=false) Integer offset ) {
 		ResponseEntity<?> responseEntity = null;
@@ -51,6 +60,12 @@ public class MessageController {
 		return responseEntity;
 	}
 	
+	/**
+	 * create a Message from the given PUT request body, as captured in a MessageRepresentation.
+	 * 
+	 * @param messageRepresentation
+	 * @return HTTP 200 with Message details as JSON upon successful creation, or HTTP 400 with error message as String for failure
+	 */
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
 	public @ResponseBody ResponseEntity<?> create( @RequestBody MessageRepresentation messageRepresentation ) {
 		ResponseEntity<?> responseEntity = null;

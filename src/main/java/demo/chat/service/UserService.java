@@ -25,6 +25,13 @@ public class UserService {
 	private UserTypeDao userTypeDao;
 	
 	
+	/**
+	 * retrieve the User for the given username.
+	 * 
+	 * @param username
+	 * @throws UserNotFoundException if no user exists with the given username
+	 * @return
+	 */
 	/* upon executing this method once for a given username, cache the User. return the cached User for future calls with the same username is given. since there's
 	   no update or delete method for users right now, there's no cache evict/reset logic needed. if null is returned, no caching takes place. so a user can be created
 	   at any time without having to worry about the cache. see expiration configuration in ehcache.xml
@@ -40,6 +47,13 @@ public class UserService {
 		return user;
 	}
 	
+	/**
+	 * persist a User based on the given UserRepresentation. if no UserType code is given in the UserRepresentation, default to Customer type.
+	 * 
+	 * @param userRepresentation
+	 * @throws UserRepresentation if a user with the given username already exists.
+	 * @return the persistent User entity
+	 */
 	public User create(final UserRepresentation userRepresentation) {
 		try {
 			get(userRepresentation.getUsername());

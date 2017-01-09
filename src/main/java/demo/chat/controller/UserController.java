@@ -26,6 +26,12 @@ public class UserController {
 	private UserService userService;
 	
 	
+	/**
+	 * retrieve the User for the given username as a GET request attribute.
+	 * 
+	 * @param username
+	 * @return HTTP 200 with User details as JSON upon successful creation, or HTTP 400 with error message as String for failure
+	 */
 	@RequestMapping(value="/{username}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> get( @PathVariable("username") String username ) {
 		ResponseEntity<?> responseEntity = null;
@@ -46,6 +52,12 @@ public class UserController {
 		return responseEntity;
 	}
 	
+	/**
+	 * create a User from the given PUT request body, as captured in a UserRepresentation.
+	 * 
+	 * @param userRepresentation
+	 * @return HTTP 200 with User details as JSON upon successful creation, or HTTP 400 with error message as String for failure
+	 */
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
 	public @ResponseBody ResponseEntity<?> create( @RequestBody UserRepresentation userRepresentation ) {
 		ResponseEntity<?> responseEntity = null;

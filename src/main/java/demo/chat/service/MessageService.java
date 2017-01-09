@@ -44,6 +44,12 @@ public class MessageService {
 	private UserService userService;
 	
 	
+	/**
+	 * persist a new Message from the given MessageRepresentation. if no known MessageType code is given in the MessageRepresentation, default to text type.
+	 * 
+	 * @param messageRepresentation
+	 * @return the persistent Message entity
+	 */
 	// only evict the cached set of messages from the cache we're adding a new message between these two users. this would have to be reconsidered
 	// if we implemented additional APIs, like getting all messages for any single user (regardless of who the other user was).
 	@CacheEvict(cacheNames="chatCache", key="{ #messageRepresentation.customerUsername, #messageRepresentation.customerServiceUsername }") 
@@ -80,6 +86,14 @@ public class MessageService {
 		return message;
 	}
 	
+	/**
+	 * get all Messages between the given customer username and customer service username. returns empty List if none exist. propagates UserNotFoundException if either given
+	 * username does not map to an extant User.
+	 * 
+	 * @param customerUsername
+	 * @param customerServiceUsername
+	 * @return a List<Message> of all Messages between the given customer username and the given customer service username.
+	 */
 	// caching #get(String, String) rather than #get(User, User) so we can avoid the userService#get() lookups as well.
 	@Cacheable(cacheNames="chatCache", key="{ #customerUsername, #customerServiceUsername }")
 	public List<Message> get(final String customerUsername, final String customerServiceUsername) {
@@ -89,6 +103,17 @@ public class MessageService {
 		return get(customerUser, customerServiceUser);
 	}
 	
+	/**
+	 * get a subset of Messages between the given customer username and customer service username bounded by the given startIndex and offset. for example, if 10 messages exist between
+	 * the given users, and startIndex and offset are 2 and 4 respectively, messages 2 through 6 will be returned.
+	 * 
+	 * @param customerUsername
+	 * @param customerServiceUsername
+	 * @param startIndex
+	 * @param offset
+	 * @return a Page<Message> of Messages, if any, between the given customer username and customer service username bounded by the given startIndex and offset.
+	 * @see #get(String, String) for no pagination
+	 */
 	// caching #get(String, String, int, int) rather than #get(User, User, int, int) so we can avoid the userService#get() lookups as well.
 	@Cacheable(cacheNames="chatCache", key="{ #customerUsername, #customerServiceUsername, #startIndex, #offset }")
 	public Page<Message> get(final String customerUsername, final String customerServiceUsername, int startIndex, int offset) {

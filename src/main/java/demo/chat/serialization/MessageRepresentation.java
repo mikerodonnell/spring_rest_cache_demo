@@ -1,5 +1,8 @@
 package demo.chat.serialization;
 
+/**
+ * flattened representation of a Message entity to simplify deserialization of an request body.
+ */
 public class MessageRepresentation {
 
 	protected String messageType;
