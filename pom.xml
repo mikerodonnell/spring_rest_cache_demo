@@ -154,6 +154,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>${surefire.version}</version>
 					<configuration>
+						<skipAfterFailureCount>1</skipAfterFailureCount>
 						<trimStackTrace>false</trimStackTrace>
 					</configuration>
 				</plugin>

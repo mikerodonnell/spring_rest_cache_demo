@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import demo.chat.dao.UserDao;
 import demo.chat.dao.UserTypeDao;
+import demo.chat.exception.UserCreationException;
 import demo.chat.exception.UserNotFoundException;
 import demo.chat.model.User;
 import demo.chat.model.UserType;
@@ -40,6 +41,14 @@ public class UserService {
 	}
 	
 	public User create(final UserRepresentation userRepresentation) {
+		try {
+			get(userRepresentation.getUsername());
+			throw new UserCreationException("user " + userRepresentation.getUsername() + " already exists.");
+		}
+		catch(UserNotFoundException userNotFoundException) {
+			// nothing to do, just verifying that #get() throws a UserCreationException for this username, which means we can proceed to create
+		}
+		
 		User user = new User();
 		user.setUsername(userRepresentation.getUsername());
 		user.setPassword(userRepresentation.getPassword());

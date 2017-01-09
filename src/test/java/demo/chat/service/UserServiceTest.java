@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import demo.chat.dao.UserDao;
+import demo.chat.exception.UserCreationException;
 import demo.chat.exception.UserNotFoundException;
 import demo.chat.model.User;
 import demo.chat.model.UserType;
@@ -51,6 +52,22 @@ public class UserServiceTest {
 	@Test(expected=UserNotFoundException.class)
 	public void testGetNotFound() {
 		userService.get("avandalay");
+	}
+	
+	@Test(expected=UserCreationException.class)
+	public void testCreateAlreadyExists() {
+		UserRepresentation customerUserRepresentation = new UserRepresentation();
+		customerUserRepresentation.setUsername("kbania");
+		customerUserRepresentation.setPassword("gold");
+		customerUserRepresentation.setUserType(UserType.CUSTOMER_CODE);
+		userService.create(customerUserRepresentation);
+		
+		// username is a unique identifier for User, regardless of UserType
+		UserRepresentation customerServiceUserRepresentation = new UserRepresentation();
+		customerServiceUserRepresentation.setUsername("kbania");
+		customerServiceUserRepresentation.setPassword("gold");
+		customerServiceUserRepresentation.setUserType(UserType.CUSTOMER_CODE);
+		userService.create(customerServiceUserRepresentation);
 	}
 	
 	@Test
