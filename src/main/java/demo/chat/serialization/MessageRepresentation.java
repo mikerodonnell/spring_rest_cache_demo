@@ -6,11 +6,11 @@ package demo.chat.serialization;
 public class MessageRepresentation {
 
 	protected String messageType;
-	protected String customerUsername;
-	protected String customerServiceUsername;
+	protected String senderUsername;
+	protected String recipientUsername;
 	protected String messageBody;
 	
-	// TODO: is this representation class needed? can we serialize directly to Message.java?
+	
 	public String getMessageType() {
 		return messageType;
 	}
@@ -18,18 +18,18 @@ public class MessageRepresentation {
 		this.messageType = messageType;
 	}
 	
-	public String getCustomerUsername() {
-		return customerUsername;
+	public String getSenderUsername() {
+		return senderUsername;
 	}
-	public void setCustomerUsername(String customerUsername) {
-		this.customerUsername = customerUsername;
+	public void setSenderUsername(String senderUsername) {
+		this.senderUsername = senderUsername;
 	}
 	
-	public String getCustomerServiceUsername() {
-		return customerServiceUsername;
+	public String getRecipientUsername() {
+		return recipientUsername;
 	}
-	public void setCustomerServiceUsername(String customerServiceUsername) {
-		this.customerServiceUsername = customerServiceUsername;
+	public void setRecipientUsername(String recipientUsername) {
+		this.recipientUsername = recipientUsername;
 	}
 	
 	public String getMessageBody() {

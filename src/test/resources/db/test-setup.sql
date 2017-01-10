@@ -27,12 +27,12 @@ CREATE TABLE message (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`message_type_id` INT NOT NULL,
 	`timestamp` DATETIME NOT NULL,
-	`customer_user_id` INT NOT NULL,
-	`customer_service_user_id` INT NOT NULL,
+	`sender_id` INT NOT NULL,
+	`recipient_id` INT NOT NULL,
 	`message_body` VARCHAR(4095) NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `message_to_customer_user` FOREIGN KEY (`customer_user_id`) REFERENCES `user` (`id`),
-	CONSTRAINT `message_to_customer_service_user` FOREIGN KEY (`customer_service_user_id`) REFERENCES `user` (`id`)
+	CONSTRAINT `message_to_sender` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`),
+	CONSTRAINT `message_to_recipient` FOREIGN KEY (`recipient_id`) REFERENCES `user` (`id`)
 );
 
 CREATE TABLE message_meta (

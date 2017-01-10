@@ -16,9 +16,11 @@ import demo.chat.model.User;
 @Repository
 public interface MessageDao extends JpaRepository<Message, Long> {
 	
-	@Query("SELECT m FROM Message m WHERE m.customerUser = :customerUser AND m.customerServiceUser = :customerServiceUser")
+	static final String BIDIRECTIONAL_MESSAGE_QUERY = "SELECT m FROM Message m WHERE (m.sender = :customerUser AND m.recipient = :customerServiceUser) OR (m.sender = :customerServiceUser AND m.recipient = :customerUser)";
+	
+	@Query(BIDIRECTIONAL_MESSAGE_QUERY)
 	public List<Message> find(@Param("customerUser") User customerUser, @Param("customerServiceUser") User customerServiceUser);
 
-	@Query("SELECT m FROM Message m WHERE m.customerUser = :customerUser AND m.customerServiceUser = :customerServiceUser")
+	@Query(BIDIRECTIONAL_MESSAGE_QUERY)
 	public Page<Message> findAll(@Param("customerUser") User customerUser, @Param("customerServiceUser") User customerServiceUser, Pageable pageable);
 }

@@ -14,10 +14,12 @@ import org.springframework.stereotype.Service;
 import demo.chat.dao.MessageDao;
 import demo.chat.dao.MessageMetaDao;
 import demo.chat.dao.MessageTypeDao;
+import demo.chat.exception.MessageCreationException;
 import demo.chat.model.Message;
 import demo.chat.model.MessageMeta;
 import demo.chat.model.MessageType;
 import demo.chat.model.User;
+import demo.chat.model.UserType;
 import demo.chat.serialization.MessageRepresentation;
 
 
@@ -53,16 +55,19 @@ public class MessageService {
 	 */
 	// only evict the cached set of messages from the cache we're adding a new message between these two users. this would have to be reconsidered
 	// if we implemented additional APIs, like getting all messages for any single user (regardless of who the other user was).
-	@CacheEvict(cacheNames="chatCache", key="{ #messageRepresentation.customerUsername, #messageRepresentation.customerServiceUsername }") 
+	@CacheEvict(cacheNames="chatCache", key="{ #messageRepresentation.senderUsername, #messageRepresentation.recipientUsername }") 
 	public Message create(final MessageRepresentation messageRepresentation) {
 		Message message = new Message();
 		message.setMessageBody(messageRepresentation.getMessageBody());
 		
-		User customerUser = userService.get( messageRepresentation.getCustomerUsername() );
-		message.setCustomerUser(customerUser);
+		User sender = userService.get( messageRepresentation.getSenderUsername() );
+		User recipient = userService.get( messageRepresentation.getRecipientUsername() );
 		
-		User customerServiceUser = userService.get( messageRepresentation.getCustomerServiceUsername() );
-		message.setCustomerServiceUser(customerServiceUser);
+		if( sender.getUserType().equals(recipient.getUserType()) )
+			throw new MessageCreationException("chat messages must be between a customer user and a customer service user");
+		
+		message.setSender(sender);
+		message.setRecipient(recipient);
 		
 		if( MessageType.IMAGE_LINK_CODE.equalsIgnoreCase(messageRepresentation.getMessageType()) )
 			message.setMessageType( messageTypeDao.find(MessageType.IMAGE_LINK_CODE) );

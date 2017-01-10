@@ -78,8 +78,8 @@ public class MessageServiceTest {
 	public void testCreateAndGet() {
 		
 		MessageRepresentation messageRepresentation = new MessageRepresentation();
-		messageRepresentation.setCustomerUsername("kbania");
-		messageRepresentation.setCustomerServiceUsername("uleo");
+		messageRepresentation.setSenderUsername("kbania");
+		messageRepresentation.setRecipientUsername("uleo");
 		messageRepresentation.setMessageBody("https://s-media-cache-ak0.pinimg.com/originals/07/c5/b2/07c5b236ccf2658b37d8061c3327615b.jpg");
 		messageRepresentation.setmessageType(MessageType.IMAGE_LINK_CODE);
 		
@@ -89,8 +89,8 @@ public class MessageServiceTest {
 		assertEquals( 1, messages.size() ); // first make sure there's just the 1 message we created;
 		Message message = messages.get(0);
 		
-		assertEquals( customerUser, message.getCustomerUser() );
-		assertEquals( customerServiceUser, message.getCustomerServiceUser() );
+		assertEquals( customerUser, message.getSender() );
+		assertEquals( customerServiceUser, message.getRecipient() );
 		assertEquals( "https://s-media-cache-ak0.pinimg.com/originals/07/c5/b2/07c5b236ccf2658b37d8061c3327615b.jpg", message.getMessageBody() );
 		assertEquals( MessageType.IMAGE_LINK_CODE, message.getMessageType().getCode() );
 	}
@@ -98,8 +98,8 @@ public class MessageServiceTest {
 	@Test(expected=UserNotFoundException.class)
 	public void testCreateUserNotFound() {
 		MessageRepresentation messageRepresentation = new MessageRepresentation();
-		messageRepresentation.setCustomerUsername("avandalay"); // this user doesn't exist
-		messageRepresentation.setCustomerServiceUsername("uleo");
+		messageRepresentation.setSenderUsername("avandalay"); // this user doesn't exist
+		messageRepresentation.setRecipientUsername("uleo");
 		messageRepresentation.setMessageBody("hello");
 		
 		messageService.create(messageRepresentation);

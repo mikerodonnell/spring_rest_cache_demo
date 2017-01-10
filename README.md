@@ -1,5 +1,5 @@
 ## about
-a simple customer service chat back end demonstrating Spring MVC REST framework. create customer service representatives, customer users, and chat messages between them. then, 
+a simple customer service chat back end demonstrating the Spring MVC REST framework. create customer service representatives, customer users, and chat messages between them. then, 
 retrieve messages between any given representative and customer, either all at once or in paginated chunks.
 in-memory application caching is implemented with [Ehcache](http://www.ehcache.org) as a proof-of-concept for horizontal application-layer scalability with reduced database access.
 
@@ -31,19 +31,22 @@ create a new customer service user:<br/>
 get an existing user:<br/>
 `curl "http://localhost:8080/spring_rest_cache_demo/user/kbania"`
 
-create a new message between an existing customer user and an existing customer service user (text-only is the default message type):<br/>
-`curl -X PUT --header "Content-Type: application/json" --data '{"customerUsername":"kbania", "customerServiceUsername":"uleo", "messageBody":"hello"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
+create a new message from a customer to customer service (text-only is the default message type):<br/>
+`curl -X PUT --header "Content-Type: application/json" --data '{"senderUsername":"kbania", "recipientUsername":"uleo", "messageBody":"hello, i have a question"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
 
-create a new video link message between an existing customer user and an existing customer service user:<br/>
-`curl -X PUT --header "Content-Type: application/json" --data '{"customerUsername":"kbania", "customerServiceUsername":"uleo", "messageBody":"https://www.youtube.com/watch?v=s13dLaTIHSg", "messageType":"VIDEO_LINK"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
+create a new message from a customer representative to a customer:<br/>
+`curl -X PUT --header "Content-Type: application/json" --data '{"senderUsername":"kbania", "recipientUsername":"uleo", "messageBody":"sure, how can i help?"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
 
-create a new image link message between an existing customer user and an existing customer service user:<br/>
-`curl -X PUT --header "Content-Type: application/json" --data '{"customerUsername":"kbania", "customerServiceUsername":"uleo", "messageBody":"https://s-media-cache-ak0.pinimg.com/originals/07/c5/b2/07c5b236ccf2658b37d8061c3327615b.jpg", "messageType":"IMAGE_LINK"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
+create a new video link message:<br/>
+`curl -X PUT --header "Content-Type: application/json" --data '{"senderUsername":"kbania", "recipientUsername":"uleo", "messageBody":"https://www.youtube.com/watch?v=s13dLaTIHSg", "messageType":"VIDEO_LINK"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
 
-get all existing message between a customer user and a customer service user:<br/>
+create a new image link message:<br/>
+`curl -X PUT --header "Content-Type: application/json" --data '{"senderUsername":"kbania", "recipientUsername":"uleo", "messageBody":"https://s-media-cache-ak0.pinimg.com/originals/07/c5/b2/07c5b236ccf2658b37d8061c3327615b.jpg", "messageType":"IMAGE_LINK"}' "http://localhost:8080/spring_rest_cache_demo/message/create"`
+
+get all historical messages between a customer user and a customer service representative:<br/>
 `curl "http://localhost:8080/spring_rest_cache_demo/message/?customerUsername=kbania&customerServiceUsername=uleo"`
 
-get a paginated subset of existing messages between a customer user and a customer service user:<br/>
+get a paginated subset of historical messages between a customer user and a customer service representative:<br/>
 `curl "http://localhost:8080/spring_rest_cache_demo/message/?customerUsername=kbania&customerServiceUsername=uleo&startIndex=0&offset=5`
 
 
@@ -58,6 +61,7 @@ goes according to plan our cache should never return stale data per the 'smart' 
 - pagination with Spring's [Pageable](http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/domain/Pageable.html) interface goes down to the database layer with LIMIT and OFFSET 
 in the underlying query -- not just pulling all entities into memory and then hiding some from the response.
 - [H2](http://www.h2database.com/) in-memory database is used in the unit tests, which allows for more effective testing of database integration than a mocking library.
+- messages are typically retrieved for two users, regardless of which is the sender vs recipient. since the query is bidirectional, the message table is indexed on sender_id and recipient_id, but not a composite index on {sender_id, recipient_id} or {recipient_id, sender_id}
 
 
 ## tools used

@@ -31,12 +31,12 @@ public class Message {
 	private Date timestamp;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="customer_user_id", nullable=false)
-	private User customerUser;
+	@JoinColumn(name="sender_id", nullable=false)
+	private User sender;
 	
 	@ManyToOne(optional=false)
-	@JoinColumn(name="customer_service_user_id", nullable=false)
-	private User customerServiceUser;
+	@JoinColumn(name="recipient_id", nullable=false)
+	private User recipient;
 	
 	@Column(name="message_body")
 	private String messageBody;
@@ -69,18 +69,18 @@ public class Message {
 		this.timestamp = timestamp;
 	}
 	
-	public User getCustomerUser() {
-		return customerUser;
+	public User getSender() {
+		return sender;
 	}
-	public void setCustomerUser(User customerUser) {
-		this.customerUser = customerUser;
+	public void setSender(User sender) {
+		this.sender = sender;
 	}
 	
-	public User getCustomerServiceUser() {
-		return customerServiceUser;
+	public User getRecipient() {
+		return recipient;
 	}
-	public void setCustomerServiceUser(User customerServiceUser) {
-		this.customerServiceUser = customerServiceUser;
+	public void setRecipient(User recipient) {
+		this.recipient = recipient;
 	}
 	
 	public String getMessageBody() {
@@ -101,8 +101,8 @@ public class Message {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((customerServiceUser == null) ? 0 : customerServiceUser.hashCode());
-		result = prime * result + ((customerUser == null) ? 0 : customerUser.hashCode());
+		result = prime * result + ((recipient == null) ? 0 : recipient.hashCode());
+		result = prime * result + ((sender == null) ? 0 : sender.hashCode());
 		result = prime * result + ((messageBody == null) ? 0 : messageBody.hashCode());
 		result = prime * result + ((messageType == null) ? 0 : messageType.hashCode());
 		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
@@ -114,9 +114,9 @@ public class Message {
 		if (obj == null || !(obj instanceof Message))
 			return false;
 		Message other = (Message) obj;
-		if (!customerServiceUser.equals(other.customerServiceUser))
+		if (!recipient.equals(other.recipient))
 			return false;
-		if (!customerUser.equals(other.customerUser))
+		if (!sender.equals(other.sender))
 			return false;
 		if (!messageBody.equals(other.messageBody))
 			return false;
