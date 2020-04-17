@@ -7,11 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import demo.chat.model.User;
 
-
 @Repository
 public interface UserDao extends JpaRepository<User, Long> {
 	
 	@Query("SELECT u FROM User u WHERE u.username = :username")
-	public User find(@Param("username") String username);
-
+	User find(@Param("username") String username);
 }

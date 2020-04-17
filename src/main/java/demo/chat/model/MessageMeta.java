@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name="message_meta")
 public class MessageMeta {
@@ -18,7 +17,6 @@ public class MessageMeta {
 	public static final String HEIGHT_KEY = "HEIGHT";
 	public static final String LENGTH_KEY = "LENGTH";
 	public static final String SOURCE_KEY = "SOURCE";
-	
 	
 	public MessageMeta() {
 		// JPA requires a public default constructor
@@ -29,7 +27,6 @@ public class MessageMeta {
 		this.key = key;
 		this.value = value;
 	}
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

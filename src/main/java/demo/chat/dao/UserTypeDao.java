@@ -11,6 +11,5 @@ import demo.chat.model.UserType;
 public interface UserTypeDao extends JpaRepository<UserType, Long> {
 
 	@Query("SELECT ut FROM UserType ut WHERE ut.code = :code")
-	public UserType find(@Param("code") String code);
-	
+	UserType find(@Param("code") String code);
 }

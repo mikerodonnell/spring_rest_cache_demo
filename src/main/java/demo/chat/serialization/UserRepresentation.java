@@ -9,7 +9,6 @@ public class UserRepresentation {
 	protected String username;
 	protected String userType;
 	
-	
 	public String getPassword() {
 		return password;
 	}
@@ -30,5 +29,4 @@ public class UserRepresentation {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	
 }

@@ -111,7 +111,7 @@ public class Message {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof Message))
+		if (!(obj instanceof Message))
 			return false;
 		Message other = (Message) obj;
 		if (!recipient.equals(other.recipient))
@@ -122,10 +122,6 @@ public class Message {
 			return false;
 		if (!messageType.equals(other.messageType))
 			return false;
-		if (!timestamp.equals(other.timestamp))
-			return false;
-		
-		return true;
+		return timestamp.equals(other.timestamp);
 	}
-
 }

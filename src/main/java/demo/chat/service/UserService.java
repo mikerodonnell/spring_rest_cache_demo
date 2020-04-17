@@ -1,10 +1,5 @@
 package demo.chat.service;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-
 import demo.chat.dao.UserDao;
 import demo.chat.dao.UserTypeDao;
 import demo.chat.exception.UserCreationException;
@@ -12,18 +7,22 @@ import demo.chat.exception.UserNotFoundException;
 import demo.chat.model.User;
 import demo.chat.model.UserType;
 import demo.chat.serialization.UserRepresentation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-	private static final Logger LOGGER = Logger.getLogger(MessageService.class);
+	private static final Logger LOGGER = LogManager.getLogger("MessageService");
 	
 	@Autowired
 	private UserDao userDao;
 	
 	@Autowired
 	private UserTypeDao userTypeDao;
-	
 	
 	/**
 	 * retrieve the User for the given username.
@@ -74,5 +73,4 @@ public class UserService {
 		
 		return userDao.save(user);
 	}
-	
 }

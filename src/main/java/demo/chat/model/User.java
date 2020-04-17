@@ -31,7 +31,6 @@ public class User {
 	@JoinColumn(name="user_type_id", nullable=false)
 	private UserType userType;
 	
-	
 	public Integer getId() {
 		return id;
 	}
@@ -75,7 +74,7 @@ public class User {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null || !(obj instanceof User))
+		if(!(obj instanceof User))
 			return false;
 		
 		User other = (User) obj;

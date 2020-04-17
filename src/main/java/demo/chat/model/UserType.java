@@ -49,7 +49,7 @@ public class UserType {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof MessageType))
+		if (!(obj instanceof MessageType))
 			return false;
 		
 		UserType other = (UserType) obj;

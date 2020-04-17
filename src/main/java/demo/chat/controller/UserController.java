@@ -1,6 +1,5 @@
 package demo.chat.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +16,12 @@ import demo.chat.model.User;
 import demo.chat.serialization.UserRepresentation;
 import demo.chat.service.UserService;
 
-
 @Controller
 @RequestMapping("/user/")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
-	
 	
 	/**
 	 * retrieve the User for the given username as a GET request attribute.
@@ -34,7 +31,7 @@ public class UserController {
 	 */
 	@RequestMapping(value="/{username}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> get( @PathVariable("username") String username ) {
-		ResponseEntity<?> responseEntity = null;
+		ResponseEntity<?> responseEntity;
 		User user = null;
 		String errorMessage = null;
 		
@@ -45,9 +42,9 @@ public class UserController {
 			errorMessage = userNotFoundException.getMessage();
 		}
 		if(user == null)
-			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // return HTTP 400 bad request, though per strict REST design this would be a 404
+			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST); // return HTTP 400 bad request, though per strict REST design this would be a 404
 		else
-			responseEntity = new ResponseEntity<User>(user, HttpStatus.OK);
+			responseEntity = new ResponseEntity<>(user, HttpStatus.OK);
 		
 		return responseEntity;
 	}
@@ -60,7 +57,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/create", method = RequestMethod.PUT)
 	public @ResponseBody ResponseEntity<?> create( @RequestBody UserRepresentation userRepresentation ) {
-		ResponseEntity<?> responseEntity = null;
+		ResponseEntity<?> responseEntity;
 		User user = null;
 		String errorMessage = null;
 		
@@ -72,11 +69,10 @@ public class UserController {
 		}
 		
 		if(user == null)
-			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // return HTTP 400 bad request, though per strict REST design this would be a 404
+			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST); // return HTTP 400 bad request, though per strict REST design this would be a 404
 		else
-			responseEntity = new ResponseEntity<User>(user, HttpStatus.OK);
+			responseEntity = new ResponseEntity<>(user, HttpStatus.OK);
 		
 		return responseEntity;
 	}
-	
 }

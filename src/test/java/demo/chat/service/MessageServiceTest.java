@@ -39,16 +39,12 @@ public class MessageServiceTest {
 	
 	@Autowired
 	private UserDao userDao;
-	
-	@Autowired
-	private UserService userService;
-	
+
 	@Autowired
 	private UserTypeDao userTypeDao;
 	
 	private User customerUser;
 	private User customerServiceUser;
-	
 	
 	@Before
 	public void setup() {
@@ -72,7 +68,6 @@ public class MessageServiceTest {
 		messageDao.deleteAll(); // clean up any Users and Messages a test has persisted so we have a clean slate for the next test (messages first, Message has fkeys to User)
 		userDao.deleteAll();
 	}
-	
 	
 	@Test
 	public void testCreateAndGet() {

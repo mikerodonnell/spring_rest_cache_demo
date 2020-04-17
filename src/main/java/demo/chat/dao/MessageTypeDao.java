@@ -11,6 +11,5 @@ import demo.chat.model.MessageType;
 public interface MessageTypeDao extends JpaRepository<MessageType, Long> {
 
 	@Query("SELECT mt FROM MessageType mt WHERE mt.code = :code")
-	public MessageType find(@Param("code") String code);
-	
+	MessageType find(@Param("code") String code);
 }

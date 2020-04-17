@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import demo.chat.model.MessageMeta;
 
-
 @Repository
 public interface MessageMetaDao extends JpaRepository<MessageMeta, Long> {
 

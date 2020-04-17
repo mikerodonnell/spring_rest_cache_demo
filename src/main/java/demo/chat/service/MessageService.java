@@ -1,16 +1,5 @@
 package demo.chat.service;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Service;
-
 import demo.chat.dao.MessageDao;
 import demo.chat.dao.MessageMetaDao;
 import demo.chat.dao.MessageTypeDao;
@@ -19,9 +8,18 @@ import demo.chat.model.Message;
 import demo.chat.model.MessageMeta;
 import demo.chat.model.MessageType;
 import demo.chat.model.User;
-import demo.chat.model.UserType;
 import demo.chat.serialization.MessageRepresentation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 @Service
 public class MessageService {
@@ -32,7 +30,7 @@ public class MessageService {
 	private static final String STUB_LENGTH = "05:34";
 	private static final String STUB_SOURCE = "youtube";
 	
-	private static final Logger LOGGER = Logger.getLogger(MessageService.class);
+	private static final Logger LOGGER = LogManager.getLogger("MessageService");
 	
 	@Autowired
 	private MessageDao messageDao;
@@ -45,7 +43,6 @@ public class MessageService {
 	
 	@Autowired
 	private UserService userService;
-	
 	
 	/**
 	 * persist a new Message from the given MessageRepresentation. if no known MessageType code is given in the MessageRepresentation, default to text type.

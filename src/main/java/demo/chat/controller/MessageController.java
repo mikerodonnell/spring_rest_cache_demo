@@ -16,14 +16,12 @@ import demo.chat.model.Message;
 import demo.chat.serialization.MessageRepresentation;
 import demo.chat.service.MessageService;
 
-
 @Controller
 @RequestMapping("/message/")
 public class MessageController {
 
 	@Autowired
 	private MessageService messageService;
-	
 	
 	/**
 	 * retrieve all Messages between the given customer username and customer service username, optionally bounded by a pagination startIndex and offset.
@@ -36,7 +34,7 @@ public class MessageController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<?> get( @RequestParam String customerUsername, @RequestParam String customerServiceUsername, @RequestParam(required=false) Integer startIndex, @RequestParam(required=false) Integer offset ) {
-		ResponseEntity<?> responseEntity = null;
+		ResponseEntity<?> responseEntity;
 		Iterable<Message> messages = null; // List and Page both extend Iterable
 		String errorMessage = null;
 		
@@ -51,11 +49,11 @@ public class MessageController {
 		}
 		
 		if(messages == null) // bad request, one or both of the specified users doesn't exist
-			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST);
+			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
 		else if(!messages.iterator().hasNext()) // valid request, just no messages found. not an error case
-			responseEntity = new ResponseEntity<String>("no chat history between customer " + customerUsername + " and customer service rep " + customerServiceUsername, HttpStatus.OK);
+			responseEntity = new ResponseEntity<>("no chat history between customer " + customerUsername + " and customer service rep " + customerServiceUsername, HttpStatus.OK);
 		else
-			responseEntity = new ResponseEntity<Iterable<Message>>(messages, HttpStatus.OK);
+			responseEntity = new ResponseEntity<>(messages, HttpStatus.OK);
 		
 		return responseEntity;
 	}
@@ -83,9 +81,9 @@ public class MessageController {
 		}
 		
 		if(message == null)
-			responseEntity = new ResponseEntity<String>(errorMessage, HttpStatus.BAD_REQUEST); // bad request.
+			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST); // bad request.
 		else
-			responseEntity = new ResponseEntity<Message>(message, HttpStatus.OK);
+			responseEntity = new ResponseEntity<>(message, HttpStatus.OK);
 		
 		return responseEntity;
 	}

@@ -50,7 +50,7 @@ public class MessageType {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof MessageType))
+		if (!(obj instanceof MessageType))
 			return false;
 		
 		MessageType other = (MessageType) obj;

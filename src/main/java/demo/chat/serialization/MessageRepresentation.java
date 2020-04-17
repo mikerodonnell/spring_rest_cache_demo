@@ -10,7 +10,6 @@ public class MessageRepresentation {
 	protected String recipientUsername;
 	protected String messageBody;
 	
-	
 	public String getMessageType() {
 		return messageType;
 	}
